@@ -242,11 +242,19 @@ class PerformanceTracker(object):
             perf_period.calculate_performance()
 
     def get_portfolio(self, performance_needs_update):
+        # our account must be updated whenever the performance has changed
+        self.account_needs_update = (
+            self.account_needs_update or performance_needs_update
+        )
         if performance_needs_update:
             self.update_performance()
         return self.cumulative_performance.as_portfolio()
 
     def get_account(self, performance_needs_update):
+        # our account must be updated whenever the performance has changed
+        self.account_needs_update = (
+            self.account_needs_update or performance_needs_update
+        )
         if self.account_needs_update:
             self._get_account(performance_needs_update)
         return self._account
